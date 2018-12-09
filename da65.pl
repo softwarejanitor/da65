@@ -982,6 +982,8 @@ my %opcodes = (
 
 die "Usage: da65.pl [input]\n" unless defined $ARGV[0];
 
+my $input_mode = 0;
+
 # Process command line arguments.
 while (defined $ARGV[0] && $ARGV[0] =~ /^-/) {
   # Set base address in decimal.
@@ -993,6 +995,9 @@ while (defined $ARGV[0] && $ARGV[0] =~ /^-/) {
   } elsif ($ARGV[0] eq '-x' && defined $ARGV[1] && $ARGV[1] =~ /^[a-z0-9A-Z]+$/) {
     $base = hex($ARGV[1]);
     shift;
+    shift;
+  } elsif ($ARGV[0] eq '-i') {
+    $input_mode = 1;
     shift;
   } else {
     die "Invalid argument $ARGV[0]\n";
@@ -1007,95 +1012,159 @@ die "Must supply filename\n" unless defined $input_file && $input_file;
 
 sub mode_Immediate {
   my ($addr, $instr) = @_;
-  print uc sprintf("%08x  %02x %02x      %3.3s #\$%02x\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
+  if ($input_mode) {
+    print uc sprintf("%04x:    %3.3s #\$%02x\n", $addr + $base, $instr, $bytes[$addr + 1]);
+  } else {
+    print uc sprintf("%08x  %02x %02x      %3.3s #\$%02x\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
+  }
   $_[0] += 2;
 }
 
 sub mode_Zero_Page {
   my ($addr, $instr) = @_;
-  print uc sprintf("%08x  %02x %02x      %3.3s \$%02x\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
+  if ($input_mode) {
+    print uc sprintf("%04x:    %3.3s \$%02x\n", $addr + $base, $instr, $bytes[$addr + 1]);
+  } else {
+    print uc sprintf("%08x  %02x %02x      %3.3s \$%02x\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
+  }
   $_[0] += 2;
 }
 
 sub mode_Zero_Page_X {
   my ($addr, $instr) = @_;
-  print uc sprintf("%08x  %02x %02x      %3.3s \$%02x,X\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
+  if ($input_mode) {
+    print uc sprintf("%04x:    %3.3s \$%02x,X\n", $addr + $base, $instr, $bytes[$addr + 1]);
+  } else {
+    print uc sprintf("%08x  %02x %02x  %3.3s \$%02x,X\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
+  }
   $_[0] += 2;
 }
 
 sub mode_Zero_Page_Y {
   my ($addr, $instr) = @_;
-  print uc sprintf("%08x  %02x %02x      %3.3s \$%02x,Y\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
+  if ($input_mode) {
+    print uc sprintf("%04x:    %3.3s \$%02x,Y\n", $addr + $base, $instr, $bytes[$addr + 1]);
+  } else {
+    print uc sprintf("%08x  %02x %02x      %3.3s \$%02x,Y\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
+  }
   $_[0] += 2;
 }
 
 sub mode_Absolute {
   my ($addr, $instr) = @_;
-  print uc sprintf("%08x  %02x %02x %02x   %3.3s \$%02x%02x\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $bytes[$addr + 2], $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+  if ($input_mode) {
+    print uc sprintf("%04x:    %3.3s \$%02x%02x\n", $addr + $base, $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+  } else {
+    print uc sprintf("%08x  %02x %02x %02x   %3.3s \$%02x%02x\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $bytes[$addr + 2], $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+  }
   $_[0] += 3;
 }
 
 sub mode_Indirect_Absolute {
   my ($addr, $instr) = @_;
-  print uc sprintf("%08x  %02x %02x %02x   %3.3s (\$%02x%02x)\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $bytes[$addr + 2], $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+  if ($input_mode) {
+    print uc sprintf("%04x:    %3.3s (\$%02x%02x)\n", $addr + $base, $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+  } else {
+    print uc sprintf("%08x  %02x %02x %02x   %3.3s (\$%02x%02x)\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $bytes[$addr + 2], $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+  }
   $_[0] += 3;
 }
 
 sub mode_Indirect_Absolute_X {
   my ($addr, $instr) = @_;
-  print uc sprintf("%08x  %02x %02x %02x   %3.3s (\$%02x%02x,X)\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $bytes[$addr + 2], $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+  if ($input_mode) {
+    print uc sprintf("%04x:    %3.3s (\$%02x%02x,X)\n", $addr + $base, $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+  } else {
+    print uc sprintf("%08x  %02x %02x %02x   %3.3s (\$%02x%02x,X)\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $bytes[$addr + 2], $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+  }
   $_[0] += 3;
 }
 
 sub mode_Absolute_X {
   my ($addr, $instr) = @_;
-  print uc sprintf("%08x  %02x %02x %02x   %3.3s \$%02x%02x,X\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $bytes[$addr + 2], $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+  if ($input_mode) {
+    print uc sprintf("%04x:    %3.3s \$%02x%02x,X\n", $addr + $base, $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+  } else {
+    print uc sprintf("%08x  %02x %02x %02x   %3.3s \$%02x%02x,X\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $bytes[$addr + 2], $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+  }
   $_[0] += 3;
 }
 
 sub mode_Absolute_Y {
   my ($addr, $instr) = @_;
-  print uc sprintf("%08x  %02x %02x %02x   %3.3s \$%02x%02x,Y\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $bytes[$addr + 2], $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+  if ($input_mode) {
+    print uc sprintf("%04x:    %3.3s \$%02x%02x,Y\n", $addr + $base, $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+  } else {
+    print uc sprintf("%08x  %02x %02x %02x   %3.3s \$%02x%02x,Y\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $bytes[$addr + 2], $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+  }
   $_[0] += 3;
 }
 
 sub mode_Indirect_Zero_Page_X {
   my ($addr, $instr) = @_;
-  print uc sprintf("%08x  %02x %02x      %3.3s (\$%02x,X)\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
+  if ($input_mode) {
+    print uc sprintf("%04x:    %3.3s (\$%02x,X)\n", $addr + $base, $instr, $bytes[$addr + 1]);
+  } else {
+    print uc sprintf("%08x  %02x %02x      %3.3s (\$%02x,X)\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
+  }
   $_[0] += 2;
 }
 
 sub mode_Indirect_Zero_Page_Y {
   my ($addr, $instr) = @_;
-  print uc sprintf("%08x  %02x %02x      %3.3s (\$%02x),Y\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
+  if ($input_mode) {
+    print uc sprintf("%04x:    %3.3s (\$%02x),Y\n", $addr + $base, $instr, $bytes[$addr + 1]);
+  } else {
+    print uc sprintf("%08x  %02x %02x      %3.3s (\$%02x),Y\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
+  }
   $_[0] += 2;
 }
 
 sub mode_Indirect_Zero_Page {
   my ($addr, $instr) = @_;
-  print uc sprintf("%08x  %02x %02x      %3.3s (\$%02x)\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
+  if ($input_mode) {
+    print uc sprintf("%04x:    %3.3s (\$%02x)\n", $addr + $base, $instr, $bytes[$addr + 1]);
+  } else {
+    print uc sprintf("%08x  %02x %02x      %3.3s (\$%02x)\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
+  }
   $_[0] += 2;
 }
 
 sub mode_Relative {
   my ($addr, $instr) = @_;
   my $rel = ($addr + $base) - (255 - $bytes[$addr + 1] - 1);
-  print uc sprintf("%08x  %02x %02x      %3.3s \$%04x\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $rel);
+  if ($input_mode) {
+    print uc sprintf("%04x:    %3.3s \$%04x\n", $addr + $base, $instr, $rel);
+  } else {
+    print uc sprintf("%08x  %02x %02x      %3.3s \$%04x\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $rel);
+  }
   $_[0] += 2;
 }
 
 sub mode_Implied {
   my ($addr, $instr) = @_;
-  print uc sprintf("%08x  %02x         %3.3s\n", $addr + $base, $bytes[$addr], $instr);
+  if ($input_mode) {
+    print uc sprintf("%04x:    %3.3s\n", $addr + $base, $instr);
+  } else {
+    print uc sprintf("%08x  %02x         %3.3s\n", $addr + $base, $bytes[$addr], $instr);
+  }
   $_[0]++;
 }
 
 sub mode_Accumulator {
   my ($addr, $instr, $operand) = @_;
-  if (defined $operand) {
-    print uc sprintf("%08x  %02x         %3.3s %s\n", $addr + $base, $bytes[$addr], $instr, $operand);
+  if ($input_mode) {
+    if (defined $operand) {
+      print uc sprintf("%04x:    %3.3s %s\n", $addr + $base, $instr, $operand);
+    } else {
+      print uc sprintf("%04x:    %3.3s\n", $addr + $base, $instr);
+    }
   } else {
-    print uc sprintf("%08x  %02x         %3.3s\n", $addr + $base, $bytes[$addr], $instr);
+    if (defined $operand) {
+      print uc sprintf("%08x  %02x         %3.3s %s\n", $addr + $base, $bytes[$addr], $instr, $operand);
+    } else {
+      print uc sprintf("%08x  %02x         %3.3s\n", $addr + $base, $bytes[$addr], $instr);
+    }
   }
   $_[0]++;
 }
