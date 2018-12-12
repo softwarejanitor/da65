@@ -227,7 +227,7 @@ my %opcodes = (
   },
   # BIT		Immediate	BIT #Oper	89	2	2
   0x89 => {
-    'modesub' => \&mode_Relative,
+    'modesub' => \&mode_Immediate,
     'mnemonic' => 'BIT'
   },
   #	 	Zero Page	BIT Zpg		24	2	3
