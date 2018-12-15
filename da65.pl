@@ -980,7 +980,19 @@ my %opcodes = (
   }
 );
 
-die "Usage: da65.pl [input]\n" unless defined $ARGV[0];
+sub usage {
+    print "Usage:\n";
+    print "$0 [-i] [-x \$addr] [-a addr] <input file>\n";
+    print " -i : input mode (for feeding to an assembler\n";
+    print " -x : base address in hex\n";
+    print " -a : base address in decimal\n";
+    print " -h : this help message\n";
+}
+
+if (!defined $ARGV[0]) {
+  usage();
+  exit;
+}
 
 my $input_mode = 0;
 
@@ -999,6 +1011,9 @@ while (defined $ARGV[0] && $ARGV[0] =~ /^-/) {
   } elsif ($ARGV[0] eq '-i') {
     $input_mode = 1;
     shift;
+  } elsif ($ARGV[0] eq '-h') {
+    usage();
+    exit;
   } else {
     die "Invalid argument $ARGV[0]\n";
   }
@@ -1055,7 +1070,7 @@ sub mode_Absolute {
   if ($input_mode) {
     print uc sprintf("%04x:    %3.3s \$%02x%02x\n", $addr + $base, $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
   } else {
-    print uc sprintf("%08x  %02x %02x %02x   %3.3s \$%02x%02x\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $bytes[$addr + 2], $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
+    print uc sprintf("%08x  %02x %02x %02x   %3.3s \$%02x%02x\n", $addr + $base, $bytes[$addr], $bytes[$addr + 2], $bytes[$addr + 1], $instr, $bytes[$addr + 1], $bytes[$addr + 2]);
   }
   $_[0] += 3;
 }
