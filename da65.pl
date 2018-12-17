@@ -1070,7 +1070,7 @@ sub mode_Absolute {
   if ($input_mode) {
     print uc sprintf("%04x:    %3.3s \$%02x%02x\n", $addr + $base, $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
   } else {
-    print uc sprintf("%08x  %02x %02x %02x   %3.3s \$%02x%02x\n", $addr + $base, $bytes[$addr], $bytes[$addr + 2], $bytes[$addr + 1], $instr, $bytes[$addr + 1], $bytes[$addr + 2]);
+    print uc sprintf("%08x  %02x %02x %02x   %3.3s \$%02x%02x\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $bytes[$addr + 2], $instr, $bytes[$addr + 2], $bytes[$addr + 1]);
   }
   $_[0] += 3;
 }
