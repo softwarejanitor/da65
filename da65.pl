@@ -1050,7 +1050,7 @@ sub mode_Zero_Page_X {
   if ($input_mode) {
     print uc sprintf("%04x:    %3.3s \$%02x,X\n", $addr + $base, $instr, $bytes[$addr + 1]);
   } else {
-    print uc sprintf("%08x  %02x %02x  %3.3s \$%02x,X\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
+    print uc sprintf("%08x  %02x %02x      %3.3s \$%02x,X\n", $addr + $base, $bytes[$addr], $bytes[$addr + 1], $instr, $bytes[$addr + 1]);
   }
   $_[0] += 2;
 }
