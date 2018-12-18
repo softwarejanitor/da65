@@ -296,12 +296,12 @@ my %opcodes = (
     'mnemonic' => 'CLD'
   },
   # CLI		Implied		CLI		58	1	2
-  0xd5 => {
+  0x58 => {
     'modesub' => \&mode_Implied,
     'mnemonic' => 'CLI'
   },
   # CLV		Implied		CLV		B8	1	2
-  0xb5 => {
+  0xb8 => {
     'modesub' => \&mode_Implied,
     'mnemonic' => 'CLV'
   },
