@@ -216,12 +216,12 @@ my %opcodes = (
     'mnemonic' => 'BCC'
   },
   # BCS		Relative	BCS Oper	B0	2	2
-  0xB0 => {
+  0xb0 => {
     'modesub' => \&mode_Relative,
     'mnemonic' => 'BCS'
   },
   # BEQ		Relative	BEQ Oper	F0	2	2
-  0xF0 => {
+  0xf0 => {
     'modesub' => \&mode_Relative,
     'mnemonic' => 'BEQ'
   },
@@ -749,7 +749,7 @@ my %opcodes = (
     'operand' => 'A'
   },
   # 		Zero Page	ROR Zpg		66	2	5
-  0x6a => {
+  0x66 => {
     'modesub' => \&mode_Zero_Page,
     'mnemonic' => 'ROR'
   },
