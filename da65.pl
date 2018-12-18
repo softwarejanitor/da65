@@ -107,7 +107,7 @@ my %opcodes = (
   # ASL		Accumulator	ASL A		0A	1	2
   0x0a => {
     'modesub' => \&mode_Accumulator,
-    'mnemonic' => 'ADC',
+    'mnemonic' => 'ASL',
     'operand' => 'A'
   },
   # 		Zero Page	ASL Zpg		06	2	5
