@@ -90,12 +90,12 @@ my %opcodes = (
     'mnemonic' => 'AND'
   },
   # 		(Zero Page,X)	AND (Zpg,X)	21	2	6
-  0x31 => {
+  0x21 => {
     'modesub' => \&mode_Indirect_Zero_Page_X,
     'mnemonic' => 'AND'
   },
   # 		(Zero Page),Y	AND (Zpg),Y	31	2	5
-  0x32 => {
+  0x31 => {
     'modesub' => \&mode_Indirect_Zero_Page_Y,
     'mnemonic' => 'AND'
   },
