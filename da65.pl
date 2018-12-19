@@ -691,6 +691,11 @@ my %opcodes = (
     'modesub' => \&mode_Implied,
     'mnemonic' => 'PHA'
   },
+  # PHP		Implied		PHP		08	1	3
+  0x08 => {
+    'modesub' => \&mode_Implied,
+    'mnemonic' => 'PHP'
+  },
   # PHX		Implied		PHX		DA	1	3
   0xda => {
     'modesub' => \&mode_Implied,
@@ -705,6 +710,11 @@ my %opcodes = (
   0x68 => {
     'modesub' => \&mode_Implied,
     'mnemonic' => 'PLA'
+  },
+  # PLP		Implied		PLP		28	1	4
+  0x68 => {
+    'modesub' => \&mode_Implied,
+    'mnemonic' => 'PLP'
   },
   # PLX		Implied		PLX		FA	1	4
   0xfa => {
