@@ -595,9 +595,9 @@ my %opcodes = (
     'modesub' => \&mode_Zero_Page,
     'mnemonic' => 'LDY'
   },
-  # 		Zero Page,Y	LDY Zpg,X	B4	2	4
+  # 		Zero Page,X	LDY Zpg,X	B4	2	4
   0xb4 => {
-    'modesub' => \&mode_Zero_Page_Y,
+    'modesub' => \&mode_Zero_Page_X,
     'mnemonic' => 'LDY'
   },
   # 		Absolute	LDY Abs		AC	3	4
