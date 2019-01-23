@@ -102,7 +102,7 @@ my %opcodes = (
   # 		(Zero Page)	AND (Zpg)	32	2	5
   0x32 => {
     'modesub' => \&mode_Indirect_Zero_Page,
-    'mnemonic' => 'ADC'
+    'mnemonic' => 'AND'
   },
   # ASL		Accumulator	ASL A		0A	1	2
   0x0a => {
@@ -1197,7 +1197,7 @@ sub mode_Accumulator {
 # Get the file size.
 my $expected = -s $input_file;
 
-my $fh,
+my $fh;
 my $buffer = '';
 
 # Open the input file.
