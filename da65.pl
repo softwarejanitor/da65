@@ -605,7 +605,7 @@ my %opcodes = (
     'modesub' => \&mode_Absolute,
     'mnemonic' => 'LDY'
   },
-  # 		Absolute,Y	LDY Abs,X	BC	3	4
+  # 		Absolute,X	LDY Abs,X	BC	3	4
   0xbc => {
     'modesub' => \&mode_Absolute_X,
     'mnemonic' => 'LDY'
@@ -1157,7 +1157,13 @@ sub mode_Indirect_Zero_Page {
 
 sub mode_Relative {
   my ($addr, $instr) = @_;
-  my $rel = ($addr + $base) - (255 - $bytes[$addr + 1] - 1);
+  #my $rel = ($addr + $base) - (255 - $bytes[$addr + 1] - 1);
+  my $rel = ($addr + $base) - (254 - $bytes[$addr + 1]);
+  if ($bytes[$addr + 1] < 127) {
+    $rel += 256;
+  }
+  #print sprintf("addr=%04x base=%04x op=%02x foo=%02x rel=%02x\n", $addr, $base, $bytes[$addr + 1], (255 - $bytes[$addr + 1] - 1), $rel);
+  #print sprintf("addr=%d base=%d op=%d foo=%d rel=%d\n", $addr, $base, $bytes[$addr + 1], (255 - $bytes[$addr + 1] - 1), $rel);
   if ($input_mode) {
     print uc sprintf("%04x:    %3.3s \$%04x\n", $addr + $base, $instr, $rel);
   } else {
